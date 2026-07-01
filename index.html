@@ -874,11 +874,33 @@
   <p>Your feedback has been recorded. We're using responses like yours to build a laundry service that students can finally trust.</p>
 </div>
 
+<!-- ALREADY FILLED STATE -->
+<div class="thankyou" id="alreadyfilled">
+  <div class="big">🔒</div>
+  <h2>You've already responded!</h2>
+  <p>This survey can only be filled once per device. Your response has already been recorded — thank you for your time! 🙏</p>
+  <div style="margin-top:24px; background:#FEF9C3; border:1px solid #FDE047; border-radius:12px; padding:16px 20px; max-width:400px; margin-left:auto; margin-right:auto;">
+    <p style="font-size:13px; color:#854D0E; font-weight:600;">Want to edit your response? Contact the survey organiser directly.</p>
+  </div>
+</div>
+
 </div><!-- /form-wrap -->
 
 <script>
-  // ── Paste your Google Apps Script Web App URL here (Step 2 below) ──
-  const SHEET_URL = "https://script.google.com/macros/s/AKfycbyEpmaE3CAoor3dFj1osoYmZnCKncYP55u2r8YmxCcs2yhqMoxi1LApTnXL09BQpaQ_/exec";
+  // ── PASTE YOUR GOOGLE APPS SCRIPT URL BELOW (replace everything between the quotes) ──
+  const SHEET_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+
+  // localStorage key
+
+  // ── On every page load: check if already submitted → show locked screen ──
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('submitted') === 'true') {
+      document.getElementById('surveyForm').style.display   = 'none';
+      document.getElementById('thankyou').style.display     = 'none';
+      document.getElementById('alreadyfilled').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -886,13 +908,13 @@
     const btn  = document.getElementById('submitBtn');
     const err  = document.getElementById('submitError');
 
-    // Required-field validation
+    // ── Validate all required radio groups ──
     const radioNames = ['college','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11'];
     let allFilled = true;
     radioNames.forEach(name => {
-      const group = form.querySelectorAll(`[name="${name}"]`);
+      const group   = form.querySelectorAll(`[name="${name}"]`);
       const checked = [...group].some(r => r.checked);
-      const card = group[0]?.closest('.card');
+      const card    = group[0]?.closest('.card');
       if (!checked) {
         allFilled = false;
         if (card) card.style.outline = '2px solid #EF4444';
@@ -909,41 +931,47 @@
     btn.disabled = true;
     btn.textContent = '⏳ Submitting...';
 
-    // Collect all form values
+    // ── Collect answers ──
     const payload = {
-      timestamp:  new Date().toLocaleString(),
-      name:       form.querySelector('[name="name"]').value || 'Anonymous',
-      college:    form.querySelector('[name="college"]:checked')?.value,
-      q1_frequency:   form.querySelector('[name="q1"]:checked')?.value,
-      q2_cleaning:    form.querySelector('[name="q2"]:checked')?.value,
-      q3_damage:      form.querySelector('[name="q3"]:checked')?.value,
-      q4_color:       form.querySelector('[name="q4"]:checked')?.value,
-      q5_lost:        form.querySelector('[name="q5"]:checked')?.value,
-      q6_delays:      form.querySelector('[name="q6"]:checked')?.value,
-      q7_tracking:    form.querySelector('[name="q7"]:checked')?.value,
-      q8_hygiene:     form.querySelector('[name="q8"]:checked')?.value,
-      q9_concern:     form.querySelector('[name="q9"]:checked')?.value,
-      q10_pay_more:   form.querySelector('[name="q10"]:checked')?.value,
-      q11_rating:     form.querySelector('[name="q11"]:checked')?.value,
-      q12_feedback:   form.querySelector('[name="q12"]').value || ''
+      timestamp:    new Date().toLocaleString(),
+      name:         form.querySelector('[name="name"]').value || 'Anonymous',
+      college:      form.querySelector('[name="college"]:checked')?.value,
+      q1_frequency: form.querySelector('[name="q1"]:checked')?.value,
+      q2_cleaning:  form.querySelector('[name="q2"]:checked')?.value,
+      q3_damage:    form.querySelector('[name="q3"]:checked')?.value,
+      q4_color:     form.querySelector('[name="q4"]:checked')?.value,
+      q5_lost:      form.querySelector('[name="q5"]:checked')?.value,
+      q6_delays:    form.querySelector('[name="q6"]:checked')?.value,
+      q7_tracking:  form.querySelector('[name="q7"]:checked')?.value,
+      q8_hygiene:   form.querySelector('[name="q8"]:checked')?.value,
+      q9_concern:   form.querySelector('[name="q9"]:checked')?.value,
+      q10_pay_more: form.querySelector('[name="q10"]:checked')?.value,
+      q11_rating:   form.querySelector('[name="q11"]:checked')?.value,
+      q12_feedback: form.querySelector('[name="q12"]').value || ''
     };
 
+    // ── IMPORTANT: Lock device FIRST, then send data ──
+    // This way even if fetch fails, form is still locked
+    localStorage.setItem('submitted', 'true');
+
+    // ── Send to Google Sheets ──
     try {
       await fetch(SHEET_URL, {
         method: 'POST',
-        mode: 'no-cors',
+        mode:   'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body:   JSON.stringify(payload)
       });
-      // no-cors means we can't read the response, but if no error = success
-      form.style.display = 'none';
-      document.getElementById('thankyou').style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      btn.disabled = false;
-      btn.innerHTML = '🧺 Submit My Feedback';
-      alert('Network error. Please check your internet and try again.');
+      // Data may not have reached sheet but device is still locked
+      console.error('Fetch error:', error);
     }
+
+    // ── Always show thank you and hide form ──
+    form.style.display                                    = 'none';
+    document.getElementById('thankyou').style.display    = 'block';
+    document.getElementById('alreadyfilled').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 </body>
