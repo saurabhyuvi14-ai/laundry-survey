@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laundry Service Experience Survey</title>
+<meta name="description" content="Help us fix laundry forever. Tell us what's really going wrong.">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --blue-mid: #BFDBFE;
+    --teal: #0D9488;
+    --teal-light: #F0FDFA;
+    --yellow: #FBBF24;
+    --yellow-light: #FFFBEB;
+    --red: #EF4444;
+    --red-light: #FEF2F2;
+    --green: #16A34A;
+    --green-light: #F0FDF4;
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+    --ink: #0F172A;
+    --muted: #64748B;
+    --faint: #F8FAFC;
+    --border: #E2E8F0;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #F1F5F9;
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #1E3A5F 0%, #2563EB 55%, #0D9488 100%);
+    padding: 64px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+    padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 span { color: #FBBF24; }
+
+  .hero p {
+    font-size: clamp(15px, 2vw, 18px);
+    color: rgba(255,255,255,0.82);
+    max-width: 540px; margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex; justify-content: center; gap: 40px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'Sora', sans-serif;
+    font-size: 30px; font-weight: 800; color: #fff; display: block;
+  }
+  .hero-stat .label { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+  /* ── CLOTHES STRIP ── */
+  .clothes-strip {
+    background: var(--white);
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 0;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .clothes-strip-inner {
+    display: flex; gap: 28px; align-items: center;
+    animation: scroll-clothes 20s linear infinite;
+    white-space: nowrap;
+  }
+  .cloth-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted); font-weight: 500;
+    flex-shrink: 0;
+  }
+  .cloth-item .icon { font-size: 36px; line-height: 1; }
+  @keyframes scroll-clothes {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── PROBLEM BANNER ── */
+  .problem-banner {
+    background: var(--yellow-light);
+    border-left: 4px solid var(--yellow);
+    margin: 32px auto;
+    max-width: 760px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 20px 24px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .problem-banner .icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .problem-banner h3 {
+    font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 700;
+    color: #92400E; margin-bottom: 6px;
+  }
+  .problem-banner p { font-size: 14px; color: #78350F; line-height: 1.6; }
+
+  /* ── FORM CONTAINER ── */
+  .form-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--blue);
+    margin: 40px 0 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--blue-mid);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .q-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--blue-light); color: var(--blue);
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+
+  .q-head {
+    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px;
+  }
+
+  .q-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 17px; font-weight: 700; color: var(--ink);
+    line-height: 1.4; flex: 1;
+  }
+  .q-title .req { color: var(--red); margin-left: 4px; }
+
+  .q-sub {
+    font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 400;
+  }
+
+  /* ── TEXT INPUT ── */
+  .text-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 15px; font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: var(--faint);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .text-input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    background: var(--white);
+  }
+
+  /* ── PICTURE CHOICES ── */
+  .pic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+  }
+
+  .pic-choice {
+    position: relative; cursor: pointer;
+  }
+  .pic-choice input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  .pic-card {
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 12px;
+    text-align: center;
+    transition: all 0.18s ease;
+    background: var(--faint);
+    user-select: none;
+  }
+  .pic-card .emoji { font-size: 36px; display: block; margin-bottom: 10px; line-height: 1; }
+  .pic-card .label { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .pic-card .sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  .pic-choice input:checked + .pic-card {
+    border-color: var(--blue);
+    background: var(--blue-light);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+  }
+  .pic-choice input:checked + .pic-card .label { color: var(--blue); }
+  .pic-card:hover { border-color: #94A3B8; background: var(--white); }
+
+  /* ── FREQUENCY CHOICES (college) ── */
+  .pill-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill-choice { position: relative; cursor: pointer; }
+  .pill-choice input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .pill-card {
+    display: flex; align-items: center; gap: 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 18px;
+    font-size: 14px; font-weight: 500; color: var(--ink);
+    background: var(--faint);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .pill-card .icon { font-size: 18px; }
+  .pill-choice input:checked + .pill-card {
+    border-color: var(--teal);
+    background: var(--teal-light);
+    color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(13,148,136,0.12);
+  }
+  .pill-card:hover { border-color: #94A3B8; background: var(--white); }
+
+  /* ── RATING BAR ── */
+  .rating-row {
+    display: flex; gap: 8px; align-items: stretch;
+  }
+  .rating-opt { position: relative; cursor: pointer; flex: 1; }
+  .rating-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .rating-card {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 14px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--faint);
+    transition: all 0.15s ease;
+    text-align: center;
+  }
+  .rating-card .num { font-size: 20px; font-weight: 700; }
+  .rating-card .star { font-size: 18px; }
+  .rating-card .lbl { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .rating-opt:nth-child(1) input:checked + .rating-card { border-color: #EF4444; background: #FEF2F2; }
+  .rating-opt:nth-child(2) input:checked + .rating-card { border-color: #F97316; background: #FFF7ED; }
+  .rating-opt:nth-child(3) input:checked + .rating-card { border-color: #FBBF24; background: #FFFBEB; }
+  .rating-opt:nth-child(4) input:checked + .rating-card { border-color: #22C55E; background: #F0FDF4; }
+  .rating-opt:nth-child(5) input:checked + .rating-card { border-color: #16A34A; background: #DCFCE7; }
+  .rating-opt input:checked + .rating-card .lbl { font-weight: 700; color: var(--ink); }
+  .rating-card:hover { border-color: #94A3B8; background: var(--white); }
+
+  /* ── YES/NO ── */
+  .yn-row { display: flex; gap: 12px; }
+  .yn-opt { position: relative; cursor: pointer; flex: 1; max-width: 180px; }
+  .yn-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .yn-card {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--faint);
+    font-size: 15px; font-weight: 600; color: var(--ink);
+    transition: all 0.15s ease;
+  }
+  .yn-card .icon { font-size: 22px; }
+  .yn-opt.yes input:checked + .yn-card { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .yn-opt.no input:checked + .yn-card { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .yn-opt.maybe input:checked + .yn-card { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
+  .yn-card:hover { border-color: #94A3B8; background: var(--white); }
+
+  /* ── CONFIDENCE SLIDER ── */
+  .conf-grid { display: flex; flex-direction: column; gap: 10px; }
+  .conf-opt { position: relative; cursor: pointer; }
+  .conf-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .conf-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--faint);
+    transition: all 0.15s ease;
+  }
+  .conf-card .icon { font-size: 26px; }
+  .conf-card .text { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .conf-card .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .conf-opt input:checked + .conf-card { border-color: var(--blue); background: var(--blue-light); }
+  .conf-opt input:checked + .conf-card .text { color: var(--blue); }
+  .conf-card:hover { border-color: #94A3B8; background: var(--white); }
+
+  /* ── SUBMIT ── */
+  .submit-section {
+    text-align: center;
+    padding: 40px 0 20px;
+  }
+  .submit-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #2563EB, #0D9488);
+    color: #fff;
+    font-family: 'Sora', sans-serif;
+    font-size: 17px; font-weight: 700;
+    padding: 18px 52px;
+    border-radius: 100px;
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,0.4); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-note { font-size: 13px; color: var(--muted); margin-top: 14px; }
+
+  /* ── THANK YOU ── */
+  .thankyou {
+    display: none;
+    text-align: center;
+    padding: 80px 24px;
+  }
+  .thankyou .big { font-size: 72px; margin-bottom: 20px; }
+  .thankyou h2 {
+    font-family: 'Sora', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 12px;
+  }
+  .thankyou p { font-size: 16px; color: var(--muted); max-width: 420px; margin: 0 auto; line-height: 1.7; }
+
+  /* ── TEXTAREA ── */
+  textarea.text-input { resize: vertical; min-height: 110px; }
+
+  /* ── REQUIRED BADGE ── */
+  .req-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    background: #FEE2E2; color: #B91C1C;
+    padding: 2px 8px; border-radius: 100px;
+    margin-left: 8px; vertical-align: middle;
+  }
+
+  @media (max-width: 500px) {
+    .pic-grid { grid-template-columns: repeat(2, 1fr); }
+    .rating-row { gap: 5px; }
+    .rating-card { padding: 10px 4px; }
+    .rating-card .num { font-size: 16px; }
+    .hero-stats { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🧺 Student Laundry Survey 2025</div>
+  <h1>Is Your Laundry<br>Service <span>Letting You Down?</span></h1>
+  <p>Torn shirts. Missing socks. Late deliveries. We're building something better — but we need your honest experience first. Takes 3 minutes.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">3 min</span><span class="label">to complete</span></div>
+    <div class="hero-stat"><span class="num">100%</span><span class="label">anonymous</span></div>
+    <div class="hero-stat"><span class="num">12</span><span class="label">quick questions</span></div>
+  </div>
+</div>
+
+<!-- SCROLLING CLOTHES STRIP -->
+<div class="clothes-strip">
+  <div class="clothes-strip-inner" id="clothesScroll">
+    <div class="cloth-item"><span class="icon">👕</span>T-Shirt</div>
+    <div class="cloth-item"><span class="icon">👖</span>Jeans</div>
+    <div class="cloth-item"><span class="icon">👗</span>Dress</div>
+    <div class="cloth-item"><span class="icon">🧥</span>Jacket</div>
+    <div class="cloth-item"><span class="icon">🩱</span>Top</div>
+    <div class="cloth-item"><span class="icon">🧦</span>Socks</div>
+    <div class="cloth-item"><span class="icon">🩲</span>Innerwear</div>
+    <div class="cloth-item"><span class="icon">🧣</span>Scarf</div>
+    <div class="cloth-item"><span class="icon">👗</span>Kurta</div>
+    <div class="cloth-item"><span class="icon">🧤</span>Gloves</div>
+    <div class="cloth-item"><span class="icon">👔</span>Shirt</div>
+    <div class="cloth-item"><span class="icon">🩳</span>Shorts</div>
+    <!-- duplicate for seamless loop -->
+    <div class="cloth-item"><span class="icon">👕</span>T-Shirt</div>
+    <div class="cloth-item"><span class="icon">👖</span>Jeans</div>
+    <div class="cloth-item"><span class="icon">👗</span>Dress</div>
+    <div class="cloth-item"><span class="icon">🧥</span>Jacket</div>
+    <div class="cloth-item"><span class="icon">🩱</span>Top</div>
+    <div class="cloth-item"><span class="icon">🧦</span>Socks</div>
+    <div class="cloth-item"><span class="icon">🩲</span>Innerwear</div>
+    <div class="cloth-item"><span class="icon">🧣</span>Scarf</div>
+    <div class="cloth-item"><span class="icon">👗</span>Kurta</div>
+    <div class="cloth-item"><span class="icon">🧤</span>Gloves</div>
+    <div class="cloth-item"><span class="icon">👔</span>Shirt</div>
+    <div class="cloth-item"><span class="icon">🩳</span>Shorts</div>
+  </div>
+</div>
+
+<!-- PROBLEM BANNER -->
+<div class="form-wrap">
+  <div class="problem-banner">
+    <div class="icon">⚠️</div>
+    <div>
+      <h3>The Laundry Problem Is Real — Help Us Fix It</h3>
+      <p>Students across campuses deal with damaged clothes, mystery stains, missing items, and zero tracking. Your honest answers help us build a service that actually works for you.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+<form id="surveyForm" onsubmit="handleSubmit(event)" novalidate>
+
+  <!-- SECTION: About You -->
+  <div class="section-label">👤 About You</div>
+
+  <!-- Name -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">✏️</div>
+      <div>
+        <div class="q-title">Your name</div>
+        <div class="q-sub">Optional — just so we know who you are</div>
+      </div>
+    </div>
+    <input type="text" class="text-input" placeholder="e.g. Priya Sharma" name="name">
+  </div>
+
+  <!-- College -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">🎓</div>
+      <div>
+        <div class="q-title">Which college are you from? <span class="req">*</span></div>
+        <div class="q-sub">Select your institution</div>
+      </div>
+    </div>
+    <div class="pill-grid">
+      <label class="pill-choice">
+        <input type="radio" name="college" value="Newton School of Technology" required>
+        <div class="pill-card"><span class="icon">🚀</span> Newton School of Technology</div>
+      </label>
+      <label class="pill-choice">
+        <input type="radio" name="college" value="Intellipaat">
+        <div class="pill-card"><span class="icon">💻</span> Intellipaat</div>
+      </label>
+      <label class="pill-choice">
+        <input type="radio" name="college" value="Next-Wave">
+        <div class="pill-card"><span class="icon">🌊</span> Next-Wave</div>
+      </label>
+      <label class="pill-choice">
+        <input type="radio" name="college" value="Svyasa">
+        <div class="pill-card"><span class="icon">🧘</span> Svyasa</div>
+      </label>
+      <label class="pill-choice">
+        <input type="radio" name="college" value="Other">
+        <div class="pill-card"><span class="icon">🏫</span> Other</div>
+      </label>
+    </div>
+  </div>
+
+  <!-- SECTION: Your Habits -->
+  <div class="section-label">🔁 Your Laundry Habits</div>
+
+  <!-- Q1: Frequency -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">1</div>
+      <div>
+        <div class="q-title">How often do you use a laundry service? <span class="req">*</span></div>
+        <div class="q-sub">Be honest — no wrong answers here</div>
+      </div>
+    </div>
+    <div class="pic-grid">
+      <label class="pic-choice">
+        <input type="radio" name="q1" value="Daily" required>
+        <div class="pic-card">
+          <span class="emoji">📅</span>
+          <div class="label">Every day</div>
+          <div class="sub">Daily user</div>
+        </div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q1" value="2-3 times a week">
+        <div class="pic-card">
+          <span class="emoji">🔄</span>
+          <div class="label">2–3 times/week</div>
+          <div class="sub">Regular</div>
+        </div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q1" value="Once a week">
+        <div class="pic-card">
+          <span class="emoji">📆</span>
+          <div class="label">Once a week</div>
+          <div class="sub">Weekend batch</div>
+        </div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q1" value="Rarely">
+        <div class="pic-card">
+          <span class="emoji">🦥</span>
+          <div class="label">Rarely</div>
+          <div class="sub">When I must</div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- SECTION: The Problems -->
+  <div class="section-label">😤 What Goes Wrong</div>
+
+  <!-- Q2: Dirty clothes -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">2</div>
+      <div>
+        <div class="q-title">Have you received clothes that were <em>not cleaned properly?</em> <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="pic-grid">
+      <label class="pic-choice">
+        <input type="radio" name="q2" value="Yes, Frequently" required>
+        <div class="pic-card"><span class="emoji">😤</span><div class="label">Yes, often</div><div class="sub">Happens a lot</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q2" value="Yes, Sometimes">
+        <div class="pic-card"><span class="emoji">😒</span><div class="label">Yes, sometimes</div><div class="sub">Now and then</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q2" value="Rarely">
+        <div class="pic-card"><span class="emoji">🙁</span><div class="label">Rarely</div><div class="sub">Once or twice</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q2" value="Never">
+        <div class="pic-card"><span class="emoji">✅</span><div class="label">Never</div><div class="sub">Always clean</div></div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q3: Damaged clothes -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">3</div>
+      <div>
+        <div class="q-title">Have your clothes been <em>damaged or torn</em> during laundry? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="pic-grid">
+      <label class="pic-choice">
+        <input type="radio" name="q3" value="Yes, Frequently" required>
+        <div class="pic-card"><span class="emoji">😡</span><div class="label">Yes, often</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q3" value="Yes, Sometimes">
+        <div class="pic-card"><span class="emoji">😟</span><div class="label">Yes, sometimes</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q3" value="Rarely">
+        <div class="pic-card"><span class="emoji">🤷</span><div class="label">Rarely</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q3" value="Never">
+        <div class="pic-card"><span class="emoji">👌</span><div class="label">Never</div></div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q4: Color fading -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">4</div>
+      <div>
+        <div class="q-title">Have you noticed <em>color fading or color mixing</em> after laundry? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="pic-grid">
+      <label class="pic-choice">
+        <input type="radio" name="q4" value="Yes, Frequently" required>
+        <div class="pic-card"><span class="emoji">🎨</span><div class="label">Yes, often</div><div class="sub">Colors are ruined</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q4" value="Yes, Sometimes">
+        <div class="pic-card"><span class="emoji">🖌️</span><div class="label">Yes, sometimes</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q4" value="Rarely">
+        <div class="pic-card"><span class="emoji">🤔</span><div class="label">Rarely</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q4" value="Never">
+        <div class="pic-card"><span class="emoji">🌈</span><div class="label">Never</div><div class="sub">Colors stay vibrant</div></div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q5: Lost clothes -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">5</div>
+      <div>
+        <div class="q-title">Have your clothes ever been <em>lost or misplaced</em>? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="pic-grid">
+      <label class="pic-choice">
+        <input type="radio" name="q5" value="Yes, Frequently" required>
+        <div class="pic-card"><span class="emoji">😱</span><div class="label">Yes, often</div><div class="sub">It's a nightmare</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q5" value="Yes, Sometimes">
+        <div class="pic-card"><span class="emoji">🔍</span><div class="label">Yes, sometimes</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q5" value="Rarely">
+        <div class="pic-card"><span class="emoji">😬</span><div class="label">Rarely</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q5" value="Never">
+        <div class="pic-card"><span class="emoji">🎯</span><div class="label">Never</div></div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q6: Delays -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">6</div>
+      <div>
+        <div class="q-title">How often do you face <em>delays</em> in receiving your clothes? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="pic-grid">
+      <label class="pic-choice">
+        <input type="radio" name="q6" value="Frequently" required>
+        <div class="pic-card"><span class="emoji">🐢</span><div class="label">Frequently</div><div class="sub">Always waiting</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q6" value="Sometimes">
+        <div class="pic-card"><span class="emoji">⏳</span><div class="label">Sometimes</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q6" value="Rarely">
+        <div class="pic-card"><span class="emoji">🕑</span><div class="label">Rarely</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q6" value="Never">
+        <div class="pic-card"><span class="emoji">⚡</span><div class="label">Never</div><div class="sub">Always on time</div></div>
+      </label>
+    </div>
+  </div>
+
+  <!-- SECTION: What You Want -->
+  <div class="section-label">✨ What You'd Love</div>
+
+  <!-- Q7: Status tracking -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">7</div>
+      <div>
+        <div class="q-title">Would you like <em>live status updates</em> on your clothes — Picked Up → Washing → Ironing → Delivered? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="yn-row">
+      <label class="yn-opt yes">
+        <input type="radio" name="q7" value="Yes" required>
+        <div class="yn-card"><span class="icon">📲</span> Yes, please!</div>
+      </label>
+      <label class="yn-opt no">
+        <input type="radio" name="q7" value="No">
+        <div class="yn-card"><span class="icon">🙅</span> No thanks</div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q8: Hygiene confidence -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">8</div>
+      <div>
+        <div class="q-title">How confident are you that your clothes are washed <em>separately & hygienically</em>? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="conf-grid">
+      <label class="conf-opt">
+        <input type="radio" name="q8" value="Very Confident" required>
+        <div class="conf-card">
+          <span class="icon">🛡️</span>
+          <div><div class="text">Very confident</div><div class="sub">I trust them completely</div></div>
+        </div>
+      </label>
+      <label class="conf-opt">
+        <input type="radio" name="q8" value="Confident">
+        <div class="conf-card">
+          <span class="icon">😊</span>
+          <div><div class="text">Confident</div><div class="sub">Mostly trust them</div></div>
+        </div>
+      </label>
+      <label class="conf-opt">
+        <input type="radio" name="q8" value="Neutral">
+        <div class="conf-card">
+          <span class="icon">😐</span>
+          <div><div class="text">Neutral</div><div class="sub">Not sure either way</div></div>
+        </div>
+      </label>
+      <label class="conf-opt">
+        <input type="radio" name="q8" value="Not Confident">
+        <div class="conf-card">
+          <span class="icon">😰</span>
+          <div><div class="text">Not confident</div><div class="sub">I have real doubts</div></div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q9: Biggest concern -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">9</div>
+      <div>
+        <div class="q-title">What is your <em>biggest concern</em> when choosing a laundry service? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="pic-grid">
+      <label class="pic-choice">
+        <input type="radio" name="q9" value="Poor Cleaning" required>
+        <div class="pic-card"><span class="emoji">🧼</span><div class="label">Poor cleaning</div><div class="sub">Stains still there</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q9" value="Lost Clothes">
+        <div class="pic-card"><span class="emoji">🔎</span><div class="label">Lost clothes</div><div class="sub">My items disappear</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q9" value="Damaged Clothes">
+        <div class="pic-card"><span class="emoji">💔</span><div class="label">Damage</div><div class="sub">Torn or faded</div></div>
+      </label>
+      <label class="pic-choice">
+        <input type="radio" name="q9" value="Late Delivery">
+        <div class="pic-card"><span class="emoji">🚚</span><div class="label">Late delivery</div><div class="sub">Waited too long</div></div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q10: Pay more -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">10</div>
+      <div>
+        <div class="q-title">Would you pay a little more for <em>guaranteed quality & on-time delivery</em>? <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="yn-row">
+      <label class="yn-opt yes">
+        <input type="radio" name="q10" value="Yes" required>
+        <div class="yn-card"><span class="icon">💰</span> Yes!</div>
+      </label>
+      <label class="yn-opt maybe">
+        <input type="radio" name="q10" value="Maybe">
+        <div class="yn-card"><span class="icon">🤔</span> Maybe</div>
+      </label>
+      <label class="yn-opt no">
+        <input type="radio" name="q10" value="No">
+        <div class="yn-card"><span class="icon">❌</span> No</div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q11: Satisfaction rating -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">11</div>
+      <div>
+        <div class="q-title">Rate your overall satisfaction with your <em>current laundry service</em> <span class="req">*</span></div>
+      </div>
+    </div>
+    <div class="rating-row">
+      <label class="rating-opt">
+        <input type="radio" name="q11" value="1" required>
+        <div class="rating-card">
+          <span class="num">1</span>
+          <span class="star">⭐</span>
+          <span class="lbl">Very poor</span>
+        </div>
+      </label>
+      <label class="rating-opt">
+        <input type="radio" name="q11" value="2">
+        <div class="rating-card">
+          <span class="num">2</span>
+          <span class="star">⭐</span>
+          <span class="lbl">Poor</span>
+        </div>
+      </label>
+      <label class="rating-opt">
+        <input type="radio" name="q11" value="3">
+        <div class="rating-card">
+          <span class="num">3</span>
+          <span class="star">⭐</span>
+          <span class="lbl">Average</span>
+        </div>
+      </label>
+      <label class="rating-opt">
+        <input type="radio" name="q11" value="4">
+        <div class="rating-card">
+          <span class="num">4</span>
+          <span class="star">⭐</span>
+          <span class="lbl">Good</span>
+        </div>
+      </label>
+      <label class="rating-opt">
+        <input type="radio" name="q11" value="5">
+        <div class="rating-card">
+          <span class="num">5</span>
+          <span class="star">⭐</span>
+          <span class="lbl">Excellent</span>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Q12: Open feedback -->
+  <div class="card">
+    <div class="q-head">
+      <div class="q-num">💬</div>
+      <div>
+        <div class="q-title">Anything else you want to share?</div>
+        <div class="q-sub">A story, a suggestion, a complaint — all welcome</div>
+      </div>
+    </div>
+    <textarea class="text-input" name="q12" placeholder="Tell us what's really going on with your laundry experience..."></textarea>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-section">
+    <div id="submitError" style="display:none; background:#FEF2F2; border:1px solid #FECACA; color:#B91C1C; border-radius:10px; padding:14px 20px; margin-bottom:20px; font-size:14px; font-weight:500;">
+      ⚠️ Please answer all required questions before submitting.
+    </div>
+    <button type="submit" class="submit-btn" id="submitBtn">
+      🧺 Submit My Feedback
+    </button>
+    <p class="submit-note">Your response is anonymous and takes effect immediately. Thank you! 🙏</p>
+  </div>
+
+</form>
+
+<!-- THANK YOU STATE -->
+<div class="thankyou" id="thankyou">
+  <div class="big">🎉</div>
+  <h2>You're awesome — thank you!</h2>
+  <p>Your feedback has been recorded. We're using responses like yours to build a laundry service that students can finally trust.</p>
+</div>
+
+</div><!-- /form-wrap -->
+
+<script>
+  // ── Paste your Google Apps Script Web App URL here (Step 2 below) ──
+  const SHEET_URL = "https://script.google.com/macros/s/AKfycbyEpmaE3CAoor3dFj1osoYmZnCKncYP55u2r8YmxCcs2yhqMoxi1LApTnXL09BQpaQ_/exec";
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('surveyForm');
+    const btn  = document.getElementById('submitBtn');
+    const err  = document.getElementById('submitError');
+
+    // Required-field validation
+    const radioNames = ['college','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11'];
+    let allFilled = true;
+    radioNames.forEach(name => {
+      const group = form.querySelectorAll(`[name="${name}"]`);
+      const checked = [...group].some(r => r.checked);
+      const card = group[0]?.closest('.card');
+      if (!checked) {
+        allFilled = false;
+        if (card) card.style.outline = '2px solid #EF4444';
+      } else {
+        if (card) card.style.outline = '';
+      }
+    });
+    if (!allFilled) {
+      err.style.display = 'block';
+      err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    err.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = '⏳ Submitting...';
+
+    // Collect all form values
+    const payload = {
+      timestamp:  new Date().toLocaleString(),
+      name:       form.querySelector('[name="name"]').value || 'Anonymous',
+      college:    form.querySelector('[name="college"]:checked')?.value,
+      q1_frequency:   form.querySelector('[name="q1"]:checked')?.value,
+      q2_cleaning:    form.querySelector('[name="q2"]:checked')?.value,
+      q3_damage:      form.querySelector('[name="q3"]:checked')?.value,
+      q4_color:       form.querySelector('[name="q4"]:checked')?.value,
+      q5_lost:        form.querySelector('[name="q5"]:checked')?.value,
+      q6_delays:      form.querySelector('[name="q6"]:checked')?.value,
+      q7_tracking:    form.querySelector('[name="q7"]:checked')?.value,
+      q8_hygiene:     form.querySelector('[name="q8"]:checked')?.value,
+      q9_concern:     form.querySelector('[name="q9"]:checked')?.value,
+      q10_pay_more:   form.querySelector('[name="q10"]:checked')?.value,
+      q11_rating:     form.querySelector('[name="q11"]:checked')?.value,
+      q12_feedback:   form.querySelector('[name="q12"]').value || ''
+    };
+
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      // no-cors means we can't read the response, but if no error = success
+      form.style.display = 'none';
+      document.getElementById('thankyou').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      btn.disabled = false;
+      btn.innerHTML = '🧺 Submit My Feedback';
+      alert('Network error. Please check your internet and try again.');
+    }
+  }
+</script>
+</body>
+</html>
