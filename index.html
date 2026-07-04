@@ -462,6 +462,7 @@
     </div>
     <input type="text" class="text-input" placeholder="e.g. Newton School of Technology" name="college" required>
   </div>
+
   <!-- SECTION: Your Habits -->
   <div class="section-label">🔁 Your Laundry Habits</div>
 
@@ -887,22 +888,40 @@
     const err  = document.getElementById('submitError');
 
     // ── Validate all required radio groups ──
-    const radioNames = ['college','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11'];
+    const radioNames = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11'];
     let allFilled = true;
+    let firstInvalidCard = null;
     radioNames.forEach(name => {
       const group   = form.querySelectorAll(`[name="${name}"]`);
       const checked = [...group].some(r => r.checked);
       const card    = group[0]?.closest('.card');
       if (!checked) {
         allFilled = false;
-        if (card) card.style.outline = '2px solid #EF4444';
+        if (card) {
+          card.style.outline = '2px solid #EF4444';
+          if (!firstInvalidCard) firstInvalidCard = card;
+        }
       } else {
         if (card) card.style.outline = '';
       }
     });
+
+    // ── Validate college text field separately (it's a text input, not radios) ──
+    const collegeInput = form.querySelector('[name="college"]');
+    const collegeCard = collegeInput.closest('.card');
+    if (!collegeInput.value.trim()) {
+      allFilled = false;
+      collegeCard.style.outline = '2px solid #EF4444';
+      if (!firstInvalidCard) firstInvalidCard = collegeCard;
+    } else {
+      collegeCard.style.outline = '';
+    }
+
     if (!allFilled) {
       err.style.display = 'block';
-      err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Scroll straight to the first unanswered question, not just the error banner —
+      // with 12 questions on one page it's easy to miss which one was skipped.
+      (firstInvalidCard || err).scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     err.style.display = 'none';
@@ -913,7 +932,7 @@
     const payload = {
       timestamp:    new Date().toLocaleString(),
       name:         form.querySelector('[name="name"]').value || 'Anonymous',
-      college:      form.querySelector('[name="college"]:checked')?.value,
+      college:      form.querySelector('[name="college"]').value.trim(),
       q1_frequency: form.querySelector('[name="q1"]:checked')?.value,
       q2_cleaning:  form.querySelector('[name="q2"]:checked')?.value,
       q3_damage:    form.querySelector('[name="q3"]:checked')?.value,
